@@ -2,8 +2,26 @@ import { buildSchema } from "graphql"
 import express from "express"
 import { graphqlHTTP } from "express-graphql"
 
+// {
+//     hackerID: 1,
+//     firstName: 'John',
+//     lastName: 'Doe',
+//     preferredName: 'JD',
+//     department:'Engineering',
+//     location: 'Sydney',
+//     tenure: '2',
+//     isBackend: true,
+//     isFrontend: false,
+//     isDesigner: false,
+//     isProduct: false,
+//     isSenior: false,
+//     isJunior: false,
+//     teamID: 1,
+// },
+
 const users = [
-    { id: 1, name: "John Doe", email: "johndoe@gmail.com" },
+    { 
+        id: 1, name: "John Doe", email: "johndoe@gmail.com" },
     { id: 2, name: "Jane Doe", email: "janedoe@gmail.com" },
     { id: 3, name: "Mike Doe", email: "mikedoe@gmail.com" },
 ]
