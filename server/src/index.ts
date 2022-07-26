@@ -1,42 +1,64 @@
 import { buildSchema } from "graphql"
 import express from "express"
 import { graphqlHTTP } from "express-graphql"
+import _ from 'lodash'
 
-// {
-//     hackerID: 1,
-//     firstName: 'John',
-//     lastName: 'Doe',
-//     preferredName: 'JD',
-//     department:'Engineering',
-//     location: 'Sydney',
-//     tenure: '2',
-//     isBackend: true,
-//     isFrontend: false,
-//     isDesigner: false,
-//     isProduct: false,
-//     isSenior: false,
-//     isJunior: false,
-//     teamID: 1,
-// },
+const Chance = require('chance');
+const chance = new Chance()
 
-const users = [
-    { 
-        id: 1, name: "John Doe", email: "johndoe@gmail.com" },
-    { id: 2, name: "Jane Doe", email: "janedoe@gmail.com" },
-    { id: 3, name: "Mike Doe", email: "mikedoe@gmail.com" },
-]
+const users =  _.times(20, (i: number) => ({
+    id: i,
+    firstName: chance.name(),
+    lastName: chance.name(),
+    preferredName: chance.name(),
+    email: chance.email(),
+    department: chance.pickone(['Engineering', 'Marketing']),
+    location: chance.pickone(['Sydney', 'Brisbane', 'Manila']),
+    tenure: chance.integer(),
+    isBackend:  chance.bool(),
+    isFrontend:  chance.bool(),
+    isDesigner:  chance.bool(),
+    isProduct: chance.bool(),
+    isSenior:  chance.bool(),
+    isJunior: chance.bool(),
+    teamID: i,
+}))
 
 const schema = buildSchema(`
     input UserInput {
+        id: ID!
+        firstName: String!
+        lastName: String!
+        preferredName: String!
         email: String!
-        name: String!
-
+        department: String!
+        location: String!
+        tenure: Int!
+        isBackend: Boolean!
+        isFrontend: Boolean!
+        isDesigner: Boolean!
+        isProduct: Boolean!
+        isSenior: Boolean!
+        isJunior: Boolean!
+        teamID: Int!
     }
 
     type User {
-        id: Int!
-        name: String!
+        id: ID!
+        firstName: String!
+        lastName: String!
+        preferredName: String!
         email: String!
+        department: String!
+        location: String!
+        tenure: Int!
+        isBackend: Boolean!
+        isFrontend: Boolean!
+        isDesigner: Boolean!
+        isProduct: Boolean!
+        isSenior: Boolean!
+        isJunior: Boolean!
+        teamID: Int!
     }
 
     type Mutation {
@@ -52,14 +74,27 @@ const schema = buildSchema(`
 
 type User = {
     id: number
-    name: string
+    firstName: string
+    lastName: string
+    preferredName: string
     email: string
+    department: string
+    location: string
+    tenure: number
+    isBackend: boolean
+    isFrontend: boolean
+    isDesigner: boolean
+    isProduct: boolean
+    isSenior: boolean
+    isJunior: boolean
+    teamID: number
+
 }
 
-type UserInput = Pick<User, "email" | "name">
+type UserInput = Pick<User, "firstName" | "lastName" | "preferredName" | "email" | "department" | "location" | "tenure" | "isBackend" | "isDesigner" | "isFrontend" | "isJunior" | "isProduct" | "isSenior" | "teamID">
 
 const getUser = (args: { id: number }): User | undefined =>
-    users.find(u => u.id === args.id)
+    users.find((u: User) => u.id === args.id)
 
 const getUsers = (): User[] => users
 
@@ -74,7 +109,7 @@ const createUser = (args: { input: UserInput }): User => {
 }
 
 const updateUser = (args: { user: User }): User => {
-    const index = users.findIndex(u => u.id === args.user.id)
+    const index = users.findIndex((u: User) => u.id === args.user.id)
     const targetUser = users[index]
 
     if (targetUser) users[index] = args.user
