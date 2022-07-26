@@ -1,5 +1,5 @@
 <template>
-  <h1>TeamsGenerator page is here</h1>
+  <h1>TeamsGenerator page is here!</h1>
 </template>
 
 <script>
