@@ -1,43 +1,24 @@
-# platform-property/property
+# random-team-generator
 
-> Create a tool that will auto generate teams for Hackathon
-
-## Getting Started
-
-```bash
-npm i
-
-npm run dev
+## Project setup
+```
+npm install
 ```
 
-### Run your unit tests
-
-```bash
-npm run test
+### Compiles and hot-reloads for development
+```
+npm run serve
 ```
 
-### Run and watch a single unit test
-
-```bash
-Can pass the name of the file to be tested
-npm run test:single list
-
-or
-
-Can pass the path of the file to be more specific
-npm run test:single direct-booking/room-rates/list
+### Compiles and minifies for production
 ```
-
-### Lints files
-
-```bash
-npm run lint
+npm run build
 ```
 
 ### Lints and fixes files
-
-```bash
-npm run lint:fix
+```
+npm run lint
 ```
 
-Then select the above test and check the result/fix the issues.
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
