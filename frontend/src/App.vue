@@ -2,17 +2,16 @@
   <!-- route outlet -->
   <!-- component matched by the route will render here -->
   <el-container>
-    <el-aside width="200px">
-      <p>
-        <!-- use the router-link component for navigation. -->
-        <!-- specify the link by passing the `to` prop. -->
-        <!-- `<router-link>` will render an `<a>` tag with the correct `href` attribute -->
-        <router-link to="/">Teams</router-link>
-        <router-link to="/profile">Profile</router-link>
-      </p>
-    </el-aside>
     <el-container>
-      <!-- <el-header>Header</el-header> -->
+      <el-header><el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo"
+    mode="horizontal"
+  >
+    <el-menu-item index="1"><router-link class="a-link" to="/">Teams List</router-link></el-menu-item>
+    <el-menu-item index="2"><router-link class="a-link" to="/profile">Hacker Profile</router-link></el-menu-item>
+    
+  </el-menu></el-header>
       <el-main>
         <router-view></router-view>
       </el-main>
@@ -35,6 +34,11 @@ export default {
   text-align: left;
   color: #2c3e50;
   margin-top: 60px;
-  display: flex
+  display: flex;
+  margin-left:100px;
+  margin-right: 100px;
+}
+.a-link {
+  text-decoration: none;
 }
 </style>
