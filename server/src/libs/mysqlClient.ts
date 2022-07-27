@@ -17,7 +17,7 @@ const getUserProfiles = () => {
             reject(new Error("Error rows is undefined"));
           } else {
             const result = response.map((row: any) => {
-               return {
+              return {
                 id: row.ID,
                 firstName: row.FirstName,
                 lastName: row.LastName,

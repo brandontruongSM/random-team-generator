@@ -42,8 +42,8 @@ export const getEmployee = async (email: string) => {
     isDesigner:  false,
     isProduct: false,
     isSenior:  false,
-    isJunior: false,
+    isQualityAnalyst: false,
     isTeamLead: false,
-    teamID: 0,
-  } as User
+    profilePic: 0,
+  }
 }
