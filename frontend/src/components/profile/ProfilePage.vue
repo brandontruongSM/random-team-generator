@@ -23,7 +23,7 @@
         </el-col >
         <el-col>
           <span>SiteMinder Email</span>
-          <el-input v-model="hackerProfile.email"></el-input>
+          <el-input disabled v-model="hackerProfile.email"></el-input>
         </el-col>
         <el-col>
           <p>First Name</p>
@@ -138,6 +138,8 @@
 import { useQuery } from '@vue/apollo-composable'
 import _ from 'lodash'
 import { ref } from 'vue';
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 import { VERIFY_HACKER_QUERY } from './query.ts'
 
 export default {
@@ -145,7 +147,8 @@ export default {
   props: {
     msg: String,
   },
-  setup() {
+  setup(props, ctx) {
+    const router = useRouter()
     const email = ref(null)
     //@TODO CREATE API CALL TO GET THIS OPTIONS
     const departments = [
@@ -189,10 +192,20 @@ export default {
     // use different variables element vue is giving some weird issue when I try to use the object .isFrontend
 
     const next = () => {
-      active.value = active.value < 2 ? active.value + 1 : active.value
-      if (active.value < 2) return
+      if (active.value === 2) {
+        ElMessage({
+          showClose: true,
+          message: '(Placeholder) Successfully saved your hacker profile.',
+          type: 'success',
+        })
 
-      return
+        router.push(`/`)
+      }
+
+      active.value = active.value < 2 ? active.value + 1 : active.value
+      ctx.router
+      //@TODO SHOW THIS MESSAGE AFTER THS SUCCESSFUL MUTATION
+
       // do something submit the data
     }
 
@@ -214,7 +227,14 @@ export default {
 
     onError(() => {
       if (!email.value) return
+
+      ElMessage({
+        showClose: true,
+        message: 'Oops, something went wrong verifying your hacker profile.',
+        type: 'error',
+      })
     })
+
     
     return {
       email,

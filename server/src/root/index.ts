@@ -84,6 +84,7 @@ const createUser = (args: { input: UserInput }): User => {
 }
 
 const verifyHacker = async (args: { email: string}) => {
+    // @TODO CHECK FIRST IF USER ALREADY EXISTS ON DB
     const employee = await getEmployee(args.email)
     
     if (!employee) {

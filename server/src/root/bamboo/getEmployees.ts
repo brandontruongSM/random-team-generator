@@ -19,8 +19,6 @@ export const getEmployees = async () => {
 
 export const getEmployee = async (email: string) => {
   const employees = await getEmployees()
-  const departments = _.uniq(employees.map((employee: any) => employee.department))
-  console.log(departments.sort(), 'departments')
 
   const employee = _.find(employees, ['workEmail', email])
 
