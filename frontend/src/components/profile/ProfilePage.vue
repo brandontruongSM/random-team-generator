@@ -235,8 +235,6 @@ export default {
 
       active.value = active.value < 2 ? active.value + 1 : active.value
       //@TODO SHOW THIS MESSAGE AFTER THS SUCCESSFUL MUTATION
-
-      // do something submit the data
     }
 
     const back = () => {
