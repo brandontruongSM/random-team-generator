@@ -37,6 +37,11 @@ const schema = buildSchema(`
         teamID: Int!
     }
 
+    type Team {
+        name: String!
+        users: [User]
+    }
+
     type Mutation {
         createUser(input: UserInput): User
         updateUser(id: Int!, input: UserInput): User
@@ -46,6 +51,8 @@ const schema = buildSchema(`
         getUser(id: String): User
         getUsers: [User]
         verifyHacker(email: String): User
+        getTeam(id: String): Team
+        getTeams: [Team]
     }
 `)
 

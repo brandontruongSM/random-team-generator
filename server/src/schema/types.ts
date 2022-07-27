@@ -18,3 +18,9 @@ export type User = {
 }
 
 export type UserInput = Pick<User, "firstName" | "lastName" | "preferredName" | "email" | "department" | "location" | "tenure" | "isBackend" | "isDesigner" | "isFrontend" | "isJunior" | "isProduct" | "isSenior" | "teamID">
+
+export type Team = {
+    id: number
+    name: string
+    users: User[]
+}
