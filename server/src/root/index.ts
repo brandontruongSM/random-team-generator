@@ -1,7 +1,7 @@
 import { User, UserInput, Team } from '../schema/types'
 import _ from 'lodash'
 import { getEmployee } from './bamboo/getEmployees'
-import { getUserProfiles, createUserProfile } from '../libs/mysqlClient'
+import { getUserProfiles, createUserProfile, getUserProfile, updateUserProfile } from '../libs/mysqlClient'
 
 const criteria = {
   minimumNumberOfMembers: 5,
@@ -107,23 +107,30 @@ const createUser = async (args: { input: UserInput }) => {
 
 const verifyHacker = async (args: { email: string}) => {
     // @TODO CHECK FIRST IF USER ALREADY EXISTS ON DB
-    const employee = await getEmployee(args.email)
+
+    let userProfile = null
+    userProfile = await getUserProfile(args.email)
+    if (!userProfile) {
+        userProfile = await getEmployee(args.email)
+    }
+
+    console.log(userProfile, 'user profile')
     
-    if (!employee) {
+    if (!userProfile) {
         throw Error('Hacker does not exists!!')
     }
 
-    return employee
+    return userProfile
 }
 
-// const updateUser = (args: { user: User }): User => {
-//     const index = users.findIndex((u: User) => u.id === args.user.id)
-//     const targetUser = users[index]
+const updateUser = async (args: { id: number, input: UserInput }) => {
+    await updateUserProfile(args.id, args.input)
 
-//     if (targetUser) users[index] = args.user
-
-//     return targetUser
-// }
+    return {
+        id: args.id,
+        ...args.input,
+    } as User
+}
 
 const root = {
     // getUser,
@@ -131,7 +138,7 @@ const root = {
     // getTeam,
     getTeams,
     createUser,
-    // updateUser,
+    updateUser,
     verifyHacker,
 }
 

@@ -7,7 +7,7 @@
       <el-button :disabled="loading" @click="verifyHacker">Verify</el-button>
     </el-col>
   </el-row>
-  <el-row :gutter="10" v-else>
+  <el-row :gutter="10" v-loading.fullscreen.lock="loading || saving" v-else>
     <el-col>
       <el-steps :active="active" finish-status="success">
         <el-step title="Step 1" />
@@ -140,10 +140,10 @@
 <script>
 import { useQuery, useMutation } from '@vue/apollo-composable'
 import _ from 'lodash'
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { VERIFY_HACKER_QUERY, CREATE_USER_PROFILE_MUTATION  } from './query.ts'
+import { VERIFY_HACKER_QUERY, CREATE_USER_PROFILE_MUTATION, UPDATE_USER_PROFILE_MUTATION  } from './query.ts'
 
 export default {
   name: "ProfilePage",
@@ -167,6 +167,7 @@ export default {
       'Global Support',
       'Growth Operations',
       'HR',
+      'iOPS',
       'ICT',
       'Legal',
       'Marketing',
@@ -178,7 +179,6 @@ export default {
       'Shared Support Services',
       'Strategic Operations',
       'Tech',
-      'iOPS',
     ]
 
     //@TODO CREATE API CALL TO GET THIS OPTIONS
@@ -191,9 +191,14 @@ export default {
       enabled: !!email.value
     })
 
-  const { mutate, loading: saving } = useMutation(CREATE_USER_PROFILE_MUTATION, {
-    variables: {},
-  })
+    const { mutate: createUserProfile, loading: creating } = useMutation(CREATE_USER_PROFILE_MUTATION, {
+      variables: {},
+    })
+
+    const { mutate: updateUserProfile, loading: updating } = useMutation(UPDATE_USER_PROFILE_MUTATION, {
+      variables: {},
+    })
+
     const active = ref(0)
     let hackerProfile = ref(null)
     // use different variables element vue is giving some weird issue when I try to use the object .isFrontend
@@ -206,7 +211,12 @@ export default {
 
         delete payload.__typename
         try {
-          await mutate({ input: payload })
+          if (+payload.id > 0) {
+            await updateUserProfile({ input: payload, id: +payload.id})
+          } else {
+            await createUserProfile({ input: payload })
+          }
+
           ElMessage({
             showClose: true,
             message: 'Successfully saved your hacker profile.',
@@ -230,7 +240,9 @@ export default {
     }
 
     const back = () => {
-      if (active.value-- === 0) return
+      if (active.value-- === 0) {
+        reset()
+      }
     }
 
     const verifyHacker = async () => {
@@ -255,6 +267,13 @@ export default {
       })
     })
 
+    const saving = computed(() => creating.value || updating.value)
+
+    const reset = () => {
+      hackerProfile.value = null
+      email.value = null
+      active.value = 0
+    }
     
     return {
       email,

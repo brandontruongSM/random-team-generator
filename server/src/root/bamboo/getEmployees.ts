@@ -29,7 +29,7 @@ export const getEmployee = async (email: string) => {
 
   // build the user to match our types
   return {
-    id: employee.id,
+    id: 0,
     firstName: employee.firstName,
     lastName: employee.lastName,
     preferredName: employee.displayName || '',

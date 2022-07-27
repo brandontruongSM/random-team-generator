@@ -19,6 +19,7 @@ query verifyHacker($email: String) {
     isTeamLead,
     isQualityAnalyst,
     profilePic
+    tenure
   }
 }
 `
@@ -41,3 +42,23 @@ export const CREATE_USER_PROFILE_MUTATION = gql `mutation createUserProfile($inp
     profilePic
   }
 }`
+
+export const UPDATE_USER_PROFILE_MUTATION = gql `mutation updateUserProfile($id: Int!, $input: UserInput!) {
+  updateUser(id: $id, input: $input) {
+    id
+    email
+    firstName
+    lastName
+    department,
+    location,
+    preferredName,
+    isFrontend,
+    isBackend,
+    isDesigner,
+    isProduct,
+    isSenior,
+    isTeamLead,
+    profilePic
+  }
+}`
+
