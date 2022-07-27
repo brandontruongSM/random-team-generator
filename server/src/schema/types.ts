@@ -13,7 +13,7 @@ export type User = {
     isProduct: boolean
     isSenior: boolean
     isJunior: boolean
-    isTeamLead: boolean
+    isTeamLead?: boolean
     teamID: number
 
 }
