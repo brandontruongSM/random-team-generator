@@ -21,10 +21,10 @@ const getUserProfiles = () => {
           } else {
             const result = response.map((row: any) => {
               return {
-                id: row.ID,
-                firstName: row.FirstName,
-                lastName: row.LastName,
-                preferredName: row.PreferredName,
+                id: row?.UserID,
+                firstName: row?.FirstName,
+                lastName: row?.LastName,
+                preferredName: row?.PreferredName,
                 email: row?.Email,
                 department: row?.Department,
                 location: row?.Location,
