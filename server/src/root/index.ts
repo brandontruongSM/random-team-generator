@@ -1,6 +1,7 @@
 import { User, UserInput, Team } from '../schema/types'
 import _ from 'lodash'
 import { getEmployee } from './bamboo/getEmployees'
+import { getUserProfiles } from '../libs/mysqlClient'
 
 const criteria = {
     minimumNumberOfMembers: 6,
@@ -36,25 +37,25 @@ const copiedUsers = _.clone(users)
 
 const teams: Team[] = _.times(Math.floor(users.length / criteria.minimumNumberOfMembers), (i: number) => {
     const frontEndDevs: User[] = []
-    _.times(criteria.numberOfFrontendDev, () => {
-        const foundIndex =  _.findIndex(copiedUsers, (user) => {
-            return (user.isFrontend)
-        }) 
-        if (foundIndex >= 0) {
-            frontEndDevs.push(copiedUsers[foundIndex])
-            copiedUsers.splice(foundIndex,1)
-        }
-    }) 
+    // _.times(criteria.numberOfFrontendDev, () => {
+    //     const foundIndex =  _.findIndex(copiedUsers, (user) => {
+    //         return (user.isFrontend)
+    //     }) 
+    //     if (foundIndex >= 0) {
+    //         frontEndDevs.push(copiedUsers[foundIndex])
+    //         copiedUsers.splice(foundIndex,1)
+    //     }
+    // }) 
     const backEndDevs: User[] = []
-    _.times(criteria.numberOfBackendDev, () => {
-        const foundIndex =  _.findIndex(copiedUsers, (user) => {
-            return (user.isBackend)
-        }) 
-        if (foundIndex >= 0) {
-            backEndDevs.push(copiedUsers[foundIndex])
-            copiedUsers.splice(foundIndex,1)
-        }
-    }) 
+    // _.times(criteria.numberOfBackendDev, () => {
+    //     const foundIndex =  _.findIndex(copiedUsers, (user) => {
+    //         return (user.isBackend)
+    //     }) 
+    //     if (foundIndex >= 0) {
+    //         backEndDevs.push(copiedUsers[foundIndex])
+    //         copiedUsers.splice(foundIndex,1)
+    //     }
+    // }) 
 
     return {
         id: i,
@@ -63,25 +64,28 @@ const teams: Team[] = _.times(Math.floor(users.length / criteria.minimumNumberOf
     }
 })
 
-const getUser = (args: { id: number }): User | undefined =>
-    users.find((u: User) => u.id === args.id)
+// const getUser = (args: { id: number }): User | undefined =>
+//     users.find((u: User) => u.id === args.id)
 
-const getUsers = (): User[] => users
+const getUsers = async () => {
+    const data = await getUserProfiles()
+    return data
+}
 
 const getTeam = (args: { id: number }): Team | undefined =>
     teams.find((u: Team) => u.id === args.id)
 
 const getTeams = (): Team[] => teams
 
-const createUser = (args: { input: UserInput }): User => {
-    const user = {
-        id: users.length + 1,
-        ...args.input,
-    }
-    users.push(user)
+// const createUser = (args: { input: UserInput }): User => {
+//     const user = {
+//         id: users.length + 1,
+//         ...args.input,
+//     }
+//     users.push(user)
 
-    return user
-}
+//     return user
+// }
 
 const verifyHacker = async (args: { email: string}) => {
     // @TODO CHECK FIRST IF USER ALREADY EXISTS ON DB
@@ -94,22 +98,22 @@ const verifyHacker = async (args: { email: string}) => {
     return employee
 }
 
-const updateUser = (args: { user: User }): User => {
-    const index = users.findIndex((u: User) => u.id === args.user.id)
-    const targetUser = users[index]
+// const updateUser = (args: { user: User }): User => {
+//     const index = users.findIndex((u: User) => u.id === args.user.id)
+//     const targetUser = users[index]
 
-    if (targetUser) users[index] = args.user
+//     if (targetUser) users[index] = args.user
 
-    return targetUser
-}
+//     return targetUser
+// }
 
 const root = {
-    getUser,
+    // getUser,
     getUsers,
     getTeam,
     getTeams,
-    createUser,
-    updateUser,
+    // createUser,
+    // updateUser,
     verifyHacker,
 }
 
