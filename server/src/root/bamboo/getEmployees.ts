@@ -32,9 +32,10 @@ export const getEmployee = async (email: string) => {
     id: employee.id,
     firstName: employee.firstName,
     lastName: employee.lastName,
-    preferredName: employee.preferredName || '',
+    preferredName: employee.displayName || '',
     department: employee.department, 
     location: '',
+    profilePic: employee.photoUrl,
     email: employee.workEmail,
     tenure: 0,
     isBackend:  false,
@@ -42,8 +43,7 @@ export const getEmployee = async (email: string) => {
     isDesigner:  false,
     isProduct: false,
     isSenior:  false,
-    isQualityAnalyst: false,
     isTeamLead: false,
-    profilePic: 0,
-  }
+    isQualityAnalyst: false,
+  } as User
 }

@@ -1,7 +1,7 @@
 import { User, UserInput, Team } from '../schema/types'
 import _ from 'lodash'
 import { getEmployee } from './bamboo/getEmployees'
-import { getUserProfiles } from '../libs/mysqlClient'
+import { getUserProfiles, createUserProfile } from '../libs/mysqlClient'
 
 const criteria = {
   minimumNumberOfMembers: 5,
@@ -96,15 +96,14 @@ const getTeams = async () => {
   return generatingTeams(users as User[])
 } 
 
-// const createUser = (args: { input: UserInput }): User => {
-//     const user = {
-//         id: users.length + 1,
-//         ...args.input,
-//     }
-//     users.push(user)
+const createUser = async (args: { input: UserInput }) => {
+    const id = await createUserProfile(args.input)
 
-//     return user
-// }
+    return {
+        ...args.input,
+        id
+    } as User
+}
 
 const verifyHacker = async (args: { email: string}) => {
     // @TODO CHECK FIRST IF USER ALREADY EXISTS ON DB
@@ -131,7 +130,7 @@ const root = {
     getUsers,
     // getTeam,
     getTeams,
-    // createUser,
+    createUser,
     // updateUser,
     verifyHacker,
 }

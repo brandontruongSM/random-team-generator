@@ -1,5 +1,5 @@
 <template>
-  <el-row v-loading.fullscreen.lock="loading" :gutter="10" v-if="!hackerProfile">
+  <el-row v-loading.fullscreen.lock="loading || saving" :gutter="10" v-if="!hackerProfile">
     <el-col :span="18">
       <el-input  v-model="email" placeholder="Email Address" />
     </el-col >
@@ -71,7 +71,10 @@
           <el-checkbox v-model="hackerProfile.isBackend" label="Backend" />
         </el-col>
         <el-col>
-          <el-checkbox v-model="hackerProfile.isDesign" label="Design" />
+          <el-checkbox v-model="hackerProfile.isQualityAnalyst" label="Quality Analyst" />
+        </el-col>
+        <el-col>
+          <el-checkbox v-model="hackerProfile.isDesigner" label="Design" />
         </el-col>
         <el-col>
           <el-checkbox v-model="hackerProfile.isProduct" label="Product" />
@@ -135,19 +138,19 @@
 </template>
 
 <script>
-import { useQuery } from '@vue/apollo-composable'
+import { useQuery, useMutation } from '@vue/apollo-composable'
 import _ from 'lodash'
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { VERIFY_HACKER_QUERY } from './query.ts'
+import { VERIFY_HACKER_QUERY, CREATE_USER_PROFILE_MUTATION  } from './query.ts'
 
 export default {
   name: "ProfilePage",
   props: {
     msg: String,
   },
-  setup(props, ctx) {
+  setup() {
     const router = useRouter()
     const email = ref(null)
     //@TODO CREATE API CALL TO GET THIS OPTIONS
@@ -187,23 +190,40 @@ export default {
     const {onResult: onResultVerifyHacker, loading, refetch: getVerifyHacker, onError} = useQuery(VERIFY_HACKER_QUERY, {
       enabled: !!email.value
     })
+
+  const { mutate, loading: saving } = useMutation(CREATE_USER_PROFILE_MUTATION, {
+    variables: {},
+  })
     const active = ref(0)
     let hackerProfile = ref(null)
     // use different variables element vue is giving some weird issue when I try to use the object .isFrontend
 
-    const next = () => {
+    const next = async () => {
       if (active.value === 2) {
-        ElMessage({
-          showClose: true,
-          message: '(Placeholder) Successfully saved your hacker profile.',
-          type: 'success',
-        })
+        const payload = {
+          ...hackerProfile.value
+        }
 
-        router.push(`/`)
+        delete payload.__typename
+        try {
+          await mutate({ input: payload })
+          ElMessage({
+            showClose: true,
+            message: 'Successfully saved your hacker profile.',
+            type: 'success',
+          })
+          router.push(`/`)
+        } catch {
+          ElMessage({
+            showClose: true,
+            message: 'Oops, something went wrong saving your hacker profile.',
+            type: 'error',
+          })
+        }
+
       }
 
       active.value = active.value < 2 ? active.value + 1 : active.value
-      ctx.router
       //@TODO SHOW THIS MESSAGE AFTER THS SUCCESSFUL MUTATION
 
       // do something submit the data
@@ -246,6 +266,7 @@ export default {
       verifyHacker,
       departments,
       locations,
+      saving,
     }
   }
 };

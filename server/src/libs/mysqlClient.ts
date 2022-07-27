@@ -1,3 +1,5 @@
+import { UserInput } from "../schema/types";
+
 const mysql = require('mysql');
 
 const pool = mysql.createPool({
@@ -43,5 +45,34 @@ const getUserProfiles = () => {
   )
 }
 
+const createUserProfile = (user: UserInput) => {
+  return new Promise((resolve, reject) => {
+    const payload = {
+      FirstName: user.firstName,
+      LastName: user.lastName,
+      Email: user.email,
+      Department: user.department,
+      Location: user.location,
+      Tenure: user.tenure,
+      PreferredName: user.preferredName,
+      ProfilePic: user.profilePic,
+      isFrontend: user.isFrontend,
+      isBackend: user.isBackend,
+      isProduct: user.isProduct,
+      isDesigner: user.isDesigner,
+      isSenior: user.isSenior,
+      isTeamLead: user.isTeamLead,
+      isQualityAnalyst: user.isQualityAnalyst,
+    }
+    pool.query('INSERT INTO UserProfile SET ?', payload, (err: any, response: any) => {
+      if (err) {
+        reject(new Error('Cannot insert User Profile'))
+      }
 
-export { getUserProfiles }
+      resolve(response.insertId)
+    })
+  })
+}
+
+
+export { getUserProfiles, createUserProfile }
