@@ -1,5 +1,6 @@
 import { User, UserInput} from '../schema/types'
 import _ from 'lodash'
+import { getEmployee } from './bamboo/getEmployees'
 
 const Chance = require('chance');
 const chance = new Chance()
@@ -37,6 +38,17 @@ const createUser = (args: { input: UserInput }): User => {
     return user
 }
 
+const verifyHacker = async (args: { email: string}) => {
+    const employee = await getEmployee(args.email)
+    
+    console.log(employee ,' employee')
+    if (!employee) {
+        throw Error('Hacker does not exists!!')
+    }
+
+    return employee
+}
+
 const updateUser = (args: { user: User }): User => {
     const index = users.findIndex((u: User) => u.id === args.user.id)
     const targetUser = users[index]
@@ -51,6 +63,7 @@ const root = {
     getUsers,
     createUser,
     updateUser,
+    verifyHacker,
 }
 
 export default root

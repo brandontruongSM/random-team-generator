@@ -45,6 +45,7 @@ const schema = buildSchema(`
     type Query {
         getUser(id: String): User
         getUsers: [User]
+        verifyHacker(email: String): User
     }
 `)
 
