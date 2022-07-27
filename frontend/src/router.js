@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
-import TeamsGenerator from './components/TeamsGenerator'
+import TeamsGenerator from './components/team-list/TeamsGenerator.vue'
 import ProfilePage from './components/ProfilePage'
 
 const routeInfos = [
