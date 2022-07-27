@@ -29,12 +29,13 @@ export const getEmployee = async (email: string) => {
 
   // build the user to match our types
   return {
-    id: employee.id,
+    id: 0,
     firstName: employee.firstName,
     lastName: employee.lastName,
-    preferredName: employee.preferredName || '',
+    preferredName: employee.displayName || '',
     department: employee.department, 
     location: '',
+    profilePic: employee.photoUrl,
     email: employee.workEmail,
     tenure: 0,
     isBackend:  false,
@@ -42,8 +43,7 @@ export const getEmployee = async (email: string) => {
     isDesigner:  false,
     isProduct: false,
     isSenior:  false,
-    isJunior: false,
     isTeamLead: false,
-    teamID: 0,
+    isQualityAnalyst: false,
   } as User
 }

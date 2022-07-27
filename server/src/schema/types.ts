@@ -12,13 +12,14 @@ export type User = {
     isDesigner: boolean
     isProduct: boolean
     isSenior: boolean
-    isJunior: boolean
-    isTeamLead?: boolean
-    teamID: number
-
+    isTeamLead: boolean
+    isQualityAnalyst: boolean
+    profilePic: string
 }
 
-export type UserInput = Pick<User, "firstName" | "lastName" | "preferredName" | "email" | "department" | "location" | "tenure" | "isBackend" | "isDesigner" | "isFrontend" | "isJunior" | "isProduct" | "isSenior" | "isTeamLead" | "teamID">
+export type UserInput = Pick<User, "firstName" | "lastName" | "preferredName" | "email" | "department" | "location" 
+    | "tenure" | "isBackend" | "isDesigner" | "isFrontend" | "isTeamLead" | "isProduct" | "isSenior" | "isTeamLead"
+    | "isQualityAnalyst" | "profilePic">
 
 export type Team = {
     id: number

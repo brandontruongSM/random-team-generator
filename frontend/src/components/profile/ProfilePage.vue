@@ -1,5 +1,5 @@
 <template>
-  <el-row v-loading.fullscreen.lock="loading" :gutter="10" v-if="!hackerProfile">
+  <el-row v-loading.fullscreen.lock="loading || saving" :gutter="10" v-if="!hackerProfile">
     <el-col :span="18">
       <el-input  v-model="email" placeholder="Email Address" />
     </el-col >
@@ -7,7 +7,7 @@
       <el-button :disabled="loading" @click="verifyHacker">Verify</el-button>
     </el-col>
   </el-row>
-  <el-row :gutter="10" v-else>
+  <el-row :gutter="10" v-loading.fullscreen.lock="loading || saving" v-else>
     <el-col>
       <el-steps :active="active" finish-status="success">
         <el-step title="Step 1" />
@@ -71,7 +71,10 @@
           <el-checkbox v-model="hackerProfile.isBackend" label="Backend" />
         </el-col>
         <el-col>
-          <el-checkbox v-model="hackerProfile.isDesign" label="Design" />
+          <el-checkbox v-model="hackerProfile.isQualityAnalyst" label="Quality Analyst" />
+        </el-col>
+        <el-col>
+          <el-checkbox v-model="hackerProfile.isDesigner" label="Design" />
         </el-col>
         <el-col>
           <el-checkbox v-model="hackerProfile.isProduct" label="Product" />
@@ -135,19 +138,19 @@
 </template>
 
 <script>
-import { useQuery } from '@vue/apollo-composable'
+import { useQuery, useMutation } from '@vue/apollo-composable'
 import _ from 'lodash'
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { VERIFY_HACKER_QUERY } from './query.ts'
+import { VERIFY_HACKER_QUERY, CREATE_USER_PROFILE_MUTATION, UPDATE_USER_PROFILE_MUTATION  } from './query.ts'
 
 export default {
   name: "ProfilePage",
   props: {
     msg: String,
   },
-  setup(props, ctx) {
+  setup() {
     const router = useRouter()
     const email = ref(null)
     //@TODO CREATE API CALL TO GET THIS OPTIONS
@@ -164,6 +167,7 @@ export default {
       'Global Support',
       'Growth Operations',
       'HR',
+      'iOPS',
       'ICT',
       'Legal',
       'Marketing',
@@ -175,7 +179,6 @@ export default {
       'Shared Support Services',
       'Strategic Operations',
       'Tech',
-      'iOPS',
     ]
 
     //@TODO CREATE API CALL TO GET THIS OPTIONS
@@ -187,30 +190,59 @@ export default {
     const {onResult: onResultVerifyHacker, loading, refetch: getVerifyHacker, onError} = useQuery(VERIFY_HACKER_QUERY, {
       enabled: !!email.value
     })
+
+    const { mutate: createUserProfile, loading: creating } = useMutation(CREATE_USER_PROFILE_MUTATION, {
+      variables: {},
+    })
+
+    const { mutate: updateUserProfile, loading: updating } = useMutation(UPDATE_USER_PROFILE_MUTATION, {
+      variables: {},
+    })
+
     const active = ref(0)
     let hackerProfile = ref(null)
     // use different variables element vue is giving some weird issue when I try to use the object .isFrontend
 
-    const next = () => {
+    const next = async () => {
       if (active.value === 2) {
-        ElMessage({
-          showClose: true,
-          message: '(Placeholder) Successfully saved your hacker profile.',
-          type: 'success',
-        })
+        const payload = {
+          ...hackerProfile.value
+        }
 
-        router.push(`/`)
+        delete payload.__typename
+        try {
+          if (+payload.id > 0) {
+            await updateUserProfile({ input: payload, id: +payload.id})
+          } else {
+            await createUserProfile({ input: payload })
+          }
+
+          ElMessage({
+            showClose: true,
+            message: 'Successfully saved your hacker profile.',
+            type: 'success',
+          })
+          router.push(`/`)
+        } catch {
+          ElMessage({
+            showClose: true,
+            message: 'Oops, something went wrong saving your hacker profile.',
+            type: 'error',
+          })
+        }
+
       }
 
       active.value = active.value < 2 ? active.value + 1 : active.value
-      ctx.router
       //@TODO SHOW THIS MESSAGE AFTER THS SUCCESSFUL MUTATION
 
       // do something submit the data
     }
 
     const back = () => {
-      if (active.value-- === 0) return
+      if (active.value-- === 0) {
+        reset()
+      }
     }
 
     const verifyHacker = async () => {
@@ -235,6 +267,13 @@ export default {
       })
     })
 
+    const saving = computed(() => creating.value || updating.value)
+
+    const reset = () => {
+      hackerProfile.value = null
+      email.value = null
+      active.value = 0
+    }
     
     return {
       email,
@@ -246,6 +285,7 @@ export default {
       verifyHacker,
       departments,
       locations,
+      saving,
     }
   }
 };
