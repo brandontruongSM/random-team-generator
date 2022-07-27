@@ -17,6 +17,7 @@ const schema = buildSchema(`
         isSenior: Boolean!
         isJunior: Boolean!
         teamID: Int!
+        isTeamLead: Boolean!
     }
 
     type User {
@@ -35,6 +36,7 @@ const schema = buildSchema(`
         isSenior: Boolean!
         isJunior: Boolean!
         teamID: Int!
+        isTeamLead: Boolean
     }
 
     type Team {

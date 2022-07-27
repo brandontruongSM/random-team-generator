@@ -19,6 +19,9 @@ export const getEmployees = async () => {
 
 export const getEmployee = async (email: string) => {
   const employees = await getEmployees()
+  const departments = _.uniq(employees.map((employee: any) => employee.department))
+  console.log(departments.sort(), 'departments')
+
   const employee = _.find(employees, ['workEmail', email])
 
   if (!employee) {
@@ -34,6 +37,15 @@ export const getEmployee = async (email: string) => {
     preferredName: employee.preferredName || '',
     department: employee.department, 
     location: '',
-    email: employee.workEmail
+    email: employee.workEmail,
+    tenure: 0,
+    isBackend:  false,
+    isFrontend:  false,
+    isDesigner:  false,
+    isProduct: false,
+    isSenior:  false,
+    isJunior: false,
+    isTeamLead: false,
+    teamID: 0,
   } as User
 }
