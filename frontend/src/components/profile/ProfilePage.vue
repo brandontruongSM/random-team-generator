@@ -201,7 +201,6 @@ export default {
 
     const active = ref(0)
     let hackerProfile = ref(null)
-    // use different variables element vue is giving some weird issue when I try to use the object .isFrontend
 
     const next = async () => {
       if (active.value === 2) {
@@ -234,9 +233,6 @@ export default {
       }
 
       active.value = active.value < 2 ? active.value + 1 : active.value
-      //@TODO SHOW THIS MESSAGE AFTER THS SUCCESSFUL MUTATION
-
-      // do something submit the data
     }
 
     const back = () => {

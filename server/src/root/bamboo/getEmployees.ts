@@ -32,7 +32,7 @@ export const getEmployee = async (email: string) => {
     id: 0,
     firstName: employee.firstName,
     lastName: employee.lastName,
-    preferredName: employee.displayName || '',
+    preferredName: employee.displayName ?? '',
     department: employee.department, 
     location: '',
     profilePic: employee.photoUrl,
