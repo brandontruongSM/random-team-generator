@@ -7,6 +7,7 @@ const bambooApiUrl = 'https://api.bamboohr.com/api/gateway.php/siteminder/v1'
 export const getEmployees = async () => {
   // @TODO CREATE THE TYPE FOR THE RESPONSE
   const res = await axios.get(`${bambooApiUrl}/employees/directory`, {
+    // @TODO store AUTHORIZATION value in .env or something similar
     headers: {
       'Authorization': 'Basic N2NjNWQyMmJhMTg4YTA2YmQwMDMyNDQ1NDI2Y2ZkNWEwZmY1ZDRjNjo=',
       'subdomain': 'siteminder',
@@ -25,7 +26,6 @@ export const getEmployee = async (email: string) => {
   if (!employee) {
     return null
   }
-
 
   // build the user to match our types
   return {
