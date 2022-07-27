@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@element-plus/icons-vue": "^2.0.6",
     "@vue/apollo-composable": "^4.0.0-alpha.19",
     "core-js": "^3.8.3",
     "element-plus": "^2.2.10",

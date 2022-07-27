@@ -1,9 +1,14 @@
 import gql from 'graphql-tag'
-export const GET_USERS_QUERY = gql`
-query getUsers {
-    getUsers {
-      firstName
-      email
+export const GET_Teams_QUERY = gql`
+query getTeams {
+    getTeams {
+      name
+      users {
+        firstName
+        email
+        lastName
+        teamID
+      }
     }
   }
 `

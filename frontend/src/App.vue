@@ -8,8 +8,9 @@
     class="el-menu-demo"
     mode="horizontal"
   >
-    <el-menu-item index="1"><router-link class="a-link" to="/">Teams List</router-link></el-menu-item>
-    <el-menu-item index="2"><router-link class="a-link" to="/profile">Hacker Profile</router-link></el-menu-item>
+    <el-menu-item index="1"><router-link class="a-link" to="/">Dashboard</router-link></el-menu-item>
+    <el-menu-item index="2"><router-link class="a-link" to="/teams">Teams List</router-link></el-menu-item>
+    <el-menu-item index="3"><router-link class="a-link" to="/profile">Hacker Profile</router-link></el-menu-item>
     
   </el-menu></el-header>
       <el-main>
@@ -20,9 +21,15 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
   name: "App",
   components: {},
+  setup() {
+    const activeIndex = ref('1')
+    return { activeIndex }
+  }
 };
 </script>
 
