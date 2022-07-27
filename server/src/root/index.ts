@@ -41,7 +41,6 @@ const createUser = (args: { input: UserInput }): User => {
 const verifyHacker = async (args: { email: string}) => {
     const employee = await getEmployee(args.email)
     
-    console.log(employee ,' employee')
     if (!employee) {
         throw Error('Hacker does not exists!!')
     }

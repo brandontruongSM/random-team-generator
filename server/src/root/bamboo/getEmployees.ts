@@ -1,0 +1,39 @@
+import axios from 'axios'
+import _ from 'lodash'
+import { User } from '../../schema/types'
+
+const bambooApiUrl = 'https://api.bamboohr.com/api/gateway.php/siteminder/v1'
+
+export const getEmployees = async () => {
+  // @TODO CREATE THE TYPE FOR THE RESPONSE
+  const res = await axios.get(`${bambooApiUrl}/employees/directory`, {
+    headers: {
+      'Authorization': 'Basic N2NjNWQyMmJhMTg4YTA2YmQwMDMyNDQ1NDI2Y2ZkNWEwZmY1ZDRjNjo=',
+      'subdomain': 'siteminder',
+      'Accept': 'application/json'
+    }
+  })
+
+  return res?.data.employees || [];
+}
+
+export const getEmployee = async (email: string) => {
+  const employees = await getEmployees()
+  const employee = _.find(employees, ['workEmail', email])
+
+  if (!employee) {
+    return null
+  }
+
+
+  // build the user to match our types
+  return {
+    id: employee.id,
+    firstName: employee.firstName,
+    lastName: employee.lastName,
+    preferredName: employee.preferredName || '',
+    department: employee.department, 
+    location: '',
+    email: employee.workEmail
+  } as User
+}
