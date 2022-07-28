@@ -9,7 +9,7 @@
     <el-col :span="6  ">
       <div class="scrollbar-demo-item">
         <h2>Participating Departments</h2>
-        <span v-for="department in registeredDepartments" :key="department">
+        <span class="department" v-for="department in registeredDepartments" :key="department">
           {{ department }}
         </span>
       </div>
@@ -58,5 +58,10 @@ export default {
   background: var(--el-color-primary-light-9);
   color: var(--el-color-primary);
   flex-direction: column;
+}
+
+.department {
+  font-weight: bold;
+  font-size: 20px;
 }
 </style>
