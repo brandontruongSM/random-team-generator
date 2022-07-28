@@ -43,7 +43,7 @@ export const getEmployee = async (email: string) => {
     isFrontend:  employee?.jobTitle?.includes('Front End') || employee?.jobTitle?.includes('Software Engineer'),
     isDesigner:  employee?.jobTitle?.includes('Designer'),
     isProduct: employee?.jobTitle?.includes('Product'),
-    isSenior:  employee.jobTitle?.includes('Senior'),
+    isSenior:  employee?.jobTitle?.includes('Senior'),
     isTeamLead: employee?.jobTitle?.includes('Technical Lead'),
     isQualityAnalyst: employee?.jobTitle?.includes('Quality Engineer'),
   } as User
