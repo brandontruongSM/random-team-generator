@@ -117,16 +117,12 @@ const createUser = async (args: { input: UserInput }) => {
 }
 
 const verifyHacker = async (args: { email: string}) => {
-    // @TODO CHECK FIRST IF USER ALREADY EXISTS ON DB
-
     let userProfile = null
     userProfile = await getUserProfile(args.email)
     if (!userProfile) {
         userProfile = await getEmployee(args.email)
     }
 
-    console.log(userProfile, 'user profile')
-    
     if (!userProfile) {
         throw Error('Hacker does not exists!!')
     }
