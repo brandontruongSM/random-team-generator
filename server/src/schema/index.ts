@@ -54,7 +54,7 @@ const schema = buildSchema(`
         getUsers: [User]
         verifyHacker(email: String): User
         getTeam(id: String): Team
-        getTeams: [Team]
+        getTeams(refresh: Boolean): [Team]
     }
 `)
 

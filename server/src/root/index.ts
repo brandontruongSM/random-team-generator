@@ -15,6 +15,8 @@ const criteria = {
 const Chance = require('chance');
 const chance = new Chance()
 
+let generatedTeams: Team[] = []
+
 const generatingTeams = (users: User[]): Team[] => {
   const teams: Team[] = []
   _.times(Math.floor(users.length / criteria.minimumNumberOfMembers), (i: number) => {
@@ -77,6 +79,8 @@ const generatingTeams = (users: User[]): Team[] => {
       })
     }
   })
+
+  generatedTeams = teams
   return teams
 }
 
@@ -91,9 +95,14 @@ const getUsers = async () => {
 // const getTeam = (args: { id: number }): Team | undefined =>
 //     teams.find((u: Team) => u.id === args.id)
 
-const getTeams = async () => {
-  const users = await getUserProfiles()
-  return generatingTeams(users as User[])
+const getTeams = async (args: { refresh: boolean }) => {
+
+  if (args.refresh || generatedTeams.length === 0) {
+    const users = await getUserProfiles()
+    return generatingTeams(_.shuffle(users as User[]))
+  }
+  
+  return generatedTeams
 } 
 
 const createUser = async (args: { input: UserInput }) => {
