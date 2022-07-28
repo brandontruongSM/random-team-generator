@@ -10,10 +10,10 @@
       <el-collapse v-for="(user, index) in team.users" :key="user.email">
       <el-collapse-item :name="index +1 ">
         <template v-if="user.isCaptain" #title>
-          {{user.firstName}}<el-icon><UserFilled /></el-icon>
+          {{`${user.firstName} ${user.lastName}`}}<el-icon><UserFilled /></el-icon>
         </template>
         <template v-else #title>
-          {{user.firstName}}
+          {{`${user.firstName} ${user.lastName}`}}
         </template>
 
  <el-row :gutter="10">

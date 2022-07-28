@@ -6,7 +6,7 @@
       ><div class="scrollbar-demo-item"><h2>There are {{teamCounts}} teams registered</h2></div></el-col>
     <el-col :span="12"
       ><div class="scrollbar-demo-item"><h2>There are {{hackerCounts}} hackers registered</h2></div></el-col>
-    <el-col :span="6  ">
+    <el-col :span="12">
       <div class="scrollbar-demo-item">
         <h2>Participating Departments</h2>
         <span class="department" v-for="department in registeredDepartments" :key="department">

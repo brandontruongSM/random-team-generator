@@ -102,7 +102,7 @@ const generatingTeams = (users: User[]): Team[] => {
       const users = [...frontEndDevs, ...backEndDevs, ...qaDevs, ...designers, ...teamLeads]
       teams.push({
         id: i,
-        name: chance.name(),
+        name: chance.animal(),
         captainId: _.shuffle(users).find(user => user.isTeamLead)!.id,
         users: users
       })
