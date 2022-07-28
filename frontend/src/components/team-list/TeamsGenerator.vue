@@ -60,19 +60,26 @@ export default {
   props: {
   },
   setup() {
-    const useGetTeams = () => {
-      const hackerteams = ref([])
-      const { loading, refetch, onResult } = useQuery(GET_Teams_QUERY, { refresh: false })
+    // const useGetTeams = () => {
+    //   const hackerteams = ref([])
+    //   const { loading, refetch, onResult } = useQuery(GET_Teams_QUERY, { refresh: false })
+    //   onResult((result)=>{
+    //     hackerteams.value = result.data.getTeams
+    //   })
+
+    //   return { hackerteams, loading, refetch}
+    // }
+     const hackerteams = ref([])
+      const { loading, refetch, onResult } = useQuery(GET_Teams_QUERY, { refresh: false }, { fetchPolicy: 'network-only' })
       onResult((result)=>{
         hackerteams.value = result.data.getTeams
       })
 
-      return { hackerteams, loading, refetch}
-    }
-    const { hackerteams, loading, refetch} = useGetTeams()
+
+    // const { hackerteams, loading, refetch} = useGetTeams()
     console.log("ssssss ~ hackerteams", hackerteams)
 
-const teams = ref([])
+    const teams = ref([])
     watch(hackerteams, () => {
   
     teams.value = hackerteams.value.map(team => {

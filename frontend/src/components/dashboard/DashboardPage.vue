@@ -32,7 +32,7 @@ export default {
   props: {
   },
   setup() {
-    const { result } = useQuery(GET_Teams_QUERY)
+    const { result } = useQuery(GET_Teams_QUERY, { refresh: false })
     const { result: usersResult } = useQuery(GET_USERS_QUERY)
     const teams = computed(()=>result.value?.getTeams)
     const teamCounts = computed(()=>teams.value?.length ?? 0)
