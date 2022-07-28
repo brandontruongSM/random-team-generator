@@ -38,12 +38,13 @@ export const getEmployee = async (email: string) => {
     profilePic: employee.photoUrl,
     email: employee.workEmail,
     tenure: 0,
-    isBackend:  false,
-    isFrontend:  false,
-    isDesigner:  false,
-    isProduct: false,
-    isSenior:  false,
-    isTeamLead: false,
-    isQualityAnalyst: false,
+    //@TODO MAKE IT AS A FUNCTION
+    isBackend:  employee?.jobTitle?.includes('Software Engineer'),
+    isFrontend:  employee?.jobTitle?.includes('Front End') || employee?.jobTitle?.includes('Software Engineer'),
+    isDesigner:  employee?.jobTitle?.includes('Designer'),
+    isProduct: employee?.jobTitle?.includes('Product'),
+    isSenior:  employee.jobTitle.includes('Senior'),
+    isTeamLead: employee?.jobTitle?.includes('Technical Lead'),
+    isQualityAnalyst: employee?.jobTitle?.includes('Quality Engineer'),
   } as User
 }
