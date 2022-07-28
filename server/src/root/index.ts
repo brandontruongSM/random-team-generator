@@ -72,10 +72,12 @@ const generatingTeams = (users: User[]): Team[] => {
     }) 
 
     if (frontEndDevs.length + backEndDevs.length + qaDevs.length + designers.length + teamLeads.length >= criteria.minimumNumberOfMembers) {
+      const users = [...frontEndDevs, ...backEndDevs, ...qaDevs, ...designers, ...teamLeads]
       teams.push({
         id: i,
         name: chance.name(),
-        users: [...frontEndDevs, ...backEndDevs, ...qaDevs, ...designers, ...teamLeads]
+        captainId: _.shuffle(users).find(user => user.isTeamLead)!.id,
+        users: users
       })
     }
   })
@@ -101,7 +103,7 @@ const getTeams = async (args: { refresh: boolean }) => {
     const users = await getUserProfiles()
     return generatingTeams(_.shuffle(users as User[]))
   }
-  
+
   return generatedTeams
 } 
 

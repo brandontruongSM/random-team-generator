@@ -24,5 +24,6 @@ export type UserInput = Pick<User, "firstName" | "lastName" | "preferredName" | 
 export type Team = {
     id: number
     name: string
+    captainId: number
     users: User[]
 }

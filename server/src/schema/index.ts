@@ -41,6 +41,7 @@ const schema = buildSchema(`
 
     type Team {
         name: String!
+        captainId: ID!
         users: [User]
     }
 
