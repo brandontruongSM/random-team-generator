@@ -18,7 +18,34 @@ const chance = new Chance()
 let generatedTeams: Team[] = []
 
 const generatingTeams = (users: User[]): Team[] => {
-  const teams: Team[] = []
+  const specialTeam: Team = {
+    id: 0,
+    name: 'Siteminder',
+    users: [],
+    captainId: 0
+  } 
+  const sankarIndex =  users.findIndex(user => user.email === 'sankar.narayan@siteminder.com')
+  specialTeam.users.push(users[sankarIndex])
+  specialTeam.captainId = users[sankarIndex].id
+  users.splice(sankarIndex, 1)
+
+  const mikeIndex = users.findIndex(user => user.email === 'mike.rogers@siteminder.com') 
+  specialTeam.users.push(users[mikeIndex])
+  users.splice(mikeIndex, 1)
+
+  const mattIndex = users.findIndex(user => user.email === 'matt.hyne@siteminder.com') 
+  specialTeam.users.push(users[mattIndex])
+  users.splice(mattIndex, 1)
+
+  const simonIndex = users.findIndex(user => user.email === 'simon.martin@siteminder.com') 
+  specialTeam.users.push(users[simonIndex])
+  users.splice(simonIndex, 1)
+
+  const johnnyIndex = users.findIndex(user => user.email === 'johnny.estilles@siteminder.com') 
+  specialTeam.users.push(users[johnnyIndex])
+  users.splice(johnnyIndex, 1)
+ 
+  const teams: Team[] = [specialTeam]
   _.times(Math.floor(users.length / criteria.minimumNumberOfMembers), (i: number) => {
     const frontEndDevs: User[] = []
     _.times(criteria.numberOfFrontendDev, () => {
